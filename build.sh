@@ -1,11 +1,12 @@
 ################################################################
 #
 # Amazon EC2 PostGIS 1.4 on RAID-x n-disk EBS Array Build Script
-# S. Tokumine 15/11/09
 # 
 # Complete Rip off of:
 # http://alestic.com/2009/06/ec2-ebs-raid
 # http://biodivertido.blogspot.com/2009/10/install-postgresql-84-and-postgis-140.html
+#
+# Additional glue by Simon Tokumine, 15/11/09
 #
 # INSTALL ON ALESTIC UBUNTU JAUNTY AMI'S - http://alestic.com/
 # I USED THE 32-bit AMI: ami-ccf615a5
@@ -16,6 +17,7 @@
 ################################################################
 #SETUP
 #Please complete the parts that are in []'s (over writing the []'s)
+#then just run the script on the server
 ################################################################ 
 export EC2_PRIVATE_KEY=/root/pk.pem #[THE_LOCATION_ON_SERVER_OF_YOUR_X509_PRIVATE_KEY]
 export EC2_CERT=/root/cert.pem #[THE_LOCATION_ON_SERVER_OF_YOUR_X509_PUBLIC_KEY]
