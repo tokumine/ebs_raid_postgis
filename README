@@ -1,0 +1,15 @@
+h1. Amazon EC2 PostGIS 1.4 on RAID-x n-disk EBS Array Build Script
+
+Complete Rip off of:
+
+* http://alestic.com/2009/06/ec2-ebs-raid
+* http://biodivertido.blogspot.com/2009/10/install-postgresql-84-and-postgis-140.html
+
+Installed on Alestic's Ubuntu Jaunty AMI's - http://alestic.com/
+I used the 32bit AMI: ami-ccf615a5
+
+
+This script creates a multiEBS software RAID-0 array, installes PostgreSQL, PostGIS and sets the data directory to the RAID array.
+
+The aim of this script is to quickly create a test environment for understanding how Amazon EC2 and EBS can be optimised to enable high IO GIS operations on large spatial datasets.
+
