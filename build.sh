@@ -9,6 +9,8 @@
 #
 # INSTALL ON ALESTIC UBUNTU JAUNTY AMI'S - http://alestic.com/
 # I USED THE 32-bit AMI: ami-ccf615a5
+#
+# NOTE, THIS IS ONLY FOR TESTING
 ################################################################
 
 ################################################################
@@ -25,7 +27,7 @@ mountpoint=[/vol]
 raid_array_location=[/dev/md0]
 raid_level=[0]
 postgres_password=[atlas]
-geo_database=[geodb]
+db_name=[geodb]
 ################################################################
 
 #####
@@ -88,28 +90,26 @@ sudo mount $mountpoint
 echo " " >> /etc/apt/sources.list
 echo "deb http://ppa.launchpad.net/pitti/postgresql/ubuntu jaunty main" >> /etc/apt/sources.list
 echo "deb-src http://ppa.launchpad.net/pitti/postgresql/ubuntu jaunty main" >> /etc/apt/sources.list
-
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8683D8A2
 sudo apt-get update
 sudo apt-get -y install postgresql-8.4 postgresql-server-dev-8.4 libpq-dev libgeos-dev proj
-
-sudo sed -i.bak -e 's/port = 5433/port = 5432/' /etc/postgresql/8.4/main/postgresql.conf
-sudo sed -i.bak -e "s@\/var\/lib\/postgresql\/8.4\/main@$mountpoint@" /etc/postgresql/8.4/main/postgresql.conf
-
 sudo /etc/init.d/postgresql-8.4 stop
+mkdir $mountpoint/data
+chown postgres $mountpoint/data
+sudo -u postgres /usr/lib/postgresql/8.4/bin/initdb -D $mountpoint/data
+sudo sed -i.bak -e 's/port = 5433/port = 5432/' /etc/postgresql/8.4/main/postgresql.conf
+sudo sed -i.bak -e "s@\/var\/lib\/postgresql\/8.4\/main@$mountpoint\/data@" /etc/postgresql/8.4/main/postgresql.conf
+sudo sed -i.bak -e 's/ssl = true/#ssl = true/' /etc/postgresql/8.4/main/postgresql.conf
 sudo /etc/init.d/postgresql-8.4 start
-
 cd /tmp
 wget http://postgis.refractions.net/download/postgis-1.4.0.tar.gz
 tar xvfz postgis-1.4.0.tar.gz
 cd postgis-1.4.0
 ./configure
 make && make install
-sudo su postgres
-psql -c"ALTER user postgres WITH PASSWORD '$postgres_password'"
-createdb $geo_database   
-createlang -d$geo_database plpgsql
-psql -d$geo_database -f /usr/share/postgresql/8.4/contrib/postgis.sql
-psql -d$geo_database -f /usr/share/postgresql/8.4/contrib/spatial_ref_sys.sql
-psql -d$geo_database -c"select postgis_lib_version();"
-exit
+sudo -u postgres psql -c"ALTER user postgres WITH PASSWORD '$postgres_password'"
+sudo -u postgres createdb $db_name   
+sudo -u postgres createlang -d$db_name plpgsql
+sudo -u postgres psql -d$db_name -f /usr/share/postgresql/8.4/contrib/postgis.sql
+sudo -u postgres psql -d$db_name -f /usr/share/postgresql/8.4/contrib/spatial_ref_sys.sql
+sudo -u postgres psql -d$db_name -c"select postgis_lib_version();"
