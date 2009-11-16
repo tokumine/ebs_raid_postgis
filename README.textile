@@ -1,5 +1,15 @@
 h1. Amazon EC2 PostGIS 1.4 on RAID-x n-disk EBS Array Build Script
 
+We all know EC2, but it does have it's drawbacks and they are mainly related to disk IO. When using EC2/EBS with large spatial datasets you can easily run into IO bottlenecks. Individually, these are not such a big deal, but when you are conducting global analyses, or need a more reliable response time, poor disk IO on EC2/EBS can quickly become a problem.
+
+To help alleviate this, there is a trend of people stringing together EBS volumes and creating their own software RAID-0 arrays to achieve higher read and right throughput.
+
+I pieced together bits and bobs to create a script that creates a PostGIS database on an n-volume RAID array on EC2. It's pretty simple stuff, but should mean that instead of hours, you can get your 20 volume RAID-0 PostGIS test rig up and running in minutes.
+
+This script creates a multiEBS software RAID-0 array, installes PostgreSQL, PostGIS and sets the data directory to the RAID array.
+
+The aim of this script is to quickly create a test environment for understanding how Amazon EC2 and EBS can be optimised to enable high IO GIS operations on large spatial datasets.
+
 Complete Rip off of:
 
 * http://alestic.com/2009/06/ec2-ebs-raid
@@ -7,9 +17,3 @@ Complete Rip off of:
 
 Installed on Alestic's Ubuntu Jaunty AMI's - http://alestic.com/
 I used the 32bit AMI: ami-ccf615a5
-
-
-This script creates a multiEBS software RAID-0 array, installes PostgreSQL, PostGIS and sets the data directory to the RAID array.
-
-The aim of this script is to quickly create a test environment for understanding how Amazon EC2 and EBS can be optimised to enable high IO GIS operations on large spatial datasets.
-
