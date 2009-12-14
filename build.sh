@@ -104,11 +104,12 @@ sudo sed -i.bak -e "s@\/var\/lib\/postgresql\/8.4\/main@$mountpoint\/data@" /etc
 sudo sed -i.bak -e 's/ssl = true/#ssl = true/' /etc/postgresql/8.4/main/postgresql.conf
 sudo /etc/init.d/postgresql-8.4 start
 cd /tmp
+# install postgis as a package for easier removal if needed
 wget http://postgis.refractions.net/download/postgis-1.4.0.tar.gz
 tar xvfz postgis-1.4.0.tar.gz
 cd postgis-1.4.0
 ./configure
-make && make install
+make && sudo checkinstall --pkgname postgis --pkgversion 1.4-src --default
 sudo -u postgres psql -c"ALTER user postgres WITH PASSWORD '$postgres_password'"
 sudo -u postgres createdb $db_name   
 sudo -u postgres createlang -d$db_name plpgsql
