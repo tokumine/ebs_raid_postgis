@@ -8,8 +8,9 @@
 #
 # Additional glue by Simon Tokumine, 15/11/09
 #
-# INSTALL ON ALESTIC UBUNTU JAUNTY AMI'S - http://alestic.com/
-# I USED THE 32-bit AMI: ami-ccf615a5
+# INSTALL ON ALESTIC UBUNTU AMI'S - http://alestic.com/
+# I ORIGINALLY USED THE 32-bit AMI: ami-ccf615a5 (jaunty), 
+# but the script is now for karmic releases (9.10) 
 #
 # NOTE, THIS IS ONLY FOR TESTING
 ################################################################
@@ -90,8 +91,8 @@ sudo mount $mountpoint
 # INSTALL POSTGRES, POSTGIS & SETUP DATABASE ON RAID VOLUME 
 ################################################################
 echo " " >> /etc/apt/sources.list
-echo "deb http://ppa.launchpad.net/pitti/postgresql/ubuntu jaunty main" >> /etc/apt/sources.list
-echo "deb-src http://ppa.launchpad.net/pitti/postgresql/ubuntu jaunty main" >> /etc/apt/sources.list
+echo "deb http://ppa.launchpad.net/pitti/postgresql/ubuntu karmic main" >> /etc/apt/sources.list
+echo "deb-src http://ppa.launchpad.net/pitti/postgresql/ubuntu karmic main" >> /etc/apt/sources.list
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8683D8A2
 sudo apt-get update
 sudo apt-get -y install postgresql-8.4 postgresql-server-dev-8.4 libpq-dev libgeos-dev proj
